@@ -222,7 +222,7 @@ public class StoreDefinitionsMapper {
         if(store.getChild(STORE_VALUE_SERIALIZER_ELMT) != null)
             valueSerializer = readSerializer(store.getChild(STORE_VALUE_SERIALIZER_ELMT));
 
-        SerializerDefinition transformSerializer = null;
+        SerializerDefinition transformSerializer = target.getTransformsSerializer();
         if(store.getChild(STORE_TRANSFORM_SERIALIZER_ELMT) != null)
             transformSerializer = readSerializer(store.getChild(STORE_TRANSFORM_SERIALIZER_ELMT));
 
@@ -363,6 +363,10 @@ public class StoreDefinitionsMapper {
         Element valueSerializer = new Element(STORE_VALUE_SERIALIZER_ELMT);
         addSerializer(valueSerializer, storeDefinition.getValueSerializer());
         store.addContent(valueSerializer);
+
+        Element transformsSerializer = new Element(STORE_TRANSFORM_SERIALIZER_ELMT);
+        addSerializer(transformsSerializer, storeDefinition.getTransformsSerializer());
+        store.addContent(transformsSerializer);
 
         return store;
     }
