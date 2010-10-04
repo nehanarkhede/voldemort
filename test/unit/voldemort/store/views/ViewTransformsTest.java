@@ -10,8 +10,8 @@ import org.junit.Test;
 
 import voldemort.VoldemortTestConstants;
 import voldemort.client.MockStoreClientFactory;
+import voldemort.client.StoreClient;
 import voldemort.client.StoreClientFactory;
-import voldemort.client.ViewStoreClient;
 
 /**
  * @author nnarkhed
@@ -20,8 +20,8 @@ import voldemort.client.ViewStoreClient;
 public class ViewTransformsTest extends TestCase {
 
     private static String storesXml = VoldemortTestConstants.getViewStoreDefinitionXml();
-    private ViewStoreClient<String, String, String> upperCaseClient;
-    private ViewStoreClient<Integer, List<Integer>, List<Integer>> rangeFilterClient;
+    private StoreClient<String, String> upperCaseClient;
+    private StoreClient<Integer, List<Integer>> rangeFilterClient;
 
     /**
      * @throws java.lang.Exception
@@ -30,8 +30,8 @@ public class ViewTransformsTest extends TestCase {
     @Before
     public void setUp() throws Exception {
         StoreClientFactory factory = new MockStoreClientFactory(null, null, null, null, storesXml);
-        upperCaseClient = factory.getViewStoreClient("test-view");
-        rangeFilterClient = factory.getViewStoreClient("range-view");
+        upperCaseClient = factory.getStoreClient("test-view");
+        rangeFilterClient = factory.getStoreClient("range-view");
         Integer[] values1 = { 1, 2, 3, 4, 5, 6, 7, 8 };
         Integer[] values2 = { 100, 200, 300, 400, 500, 600, 700 };
         rangeFilterClient.put(1, Arrays.asList(values1), null);

@@ -34,7 +34,6 @@ import voldemort.client.ClientConfig;
 import voldemort.client.SocketStoreClientFactory;
 import voldemort.client.StoreClient;
 import voldemort.client.StoreClientFactory;
-import voldemort.client.ViewStoreClient;
 import voldemort.serialization.IdentitySerializer;
 import voldemort.serialization.Serializer;
 import voldemort.serialization.SerializerDefinition;
@@ -106,7 +105,7 @@ public class Benchmark {
     public static final String HAS_TRANSFORMS = "true";
 
     private StoreClient<Object, Object> storeClient;
-    private ViewStoreClient<Object, Object, Object> viewStoreClient;
+    private StoreClient<Object, Object> viewStoreClient;
     private StoreClientFactory factory;
 
     private int numThreads;
@@ -345,7 +344,7 @@ public class Benchmark {
 
             SocketStoreClientFactory socketFactory = new SocketStoreClientFactory(clientConfig);
             if(isView)
-                this.viewStoreClient = socketFactory.getViewStoreClient(storeName);
+                this.viewStoreClient = socketFactory.getStoreClient(storeName);
             else
                 this.storeClient = socketFactory.getStoreClient(storeName);
             StoreDefinition storeDef = getStoreDefinition(socketFactory, storeName);
@@ -407,7 +406,7 @@ public class Benchmark {
 
             this.factory = new StaticStoreClientFactory(store);
             if(storeType.compareTo("view") == 0)
-                this.viewStoreClient = factory.getViewStoreClient(store.getName());
+                this.viewStoreClient = factory.getStoreClient(store.getName());
             else
                 this.storeClient = factory.getStoreClient(store.getName());
         }
@@ -453,7 +452,7 @@ public class Benchmark {
         DbWrapper db;
         for(int index = 0; index < this.numThreads; index++) {
             if(isView) {
-                db = new VoldemortViewWrapper(viewStoreClient, this.verifyRead, this.ignoreNulls);
+                db = new VoldemortViewWrapper(storeClient, this.verifyRead, this.ignoreNulls);
             } else {
                 db = new VoldemortWrapper(storeClient, this.verifyRead, this.ignoreNulls);
             }

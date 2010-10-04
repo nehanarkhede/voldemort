@@ -120,9 +120,10 @@ public abstract class AbstractStoreClientFactory implements StoreClientFactory {
         return getStoreClient(storeName, null);
     }
 
-    public <K, V, T> ViewStoreClient<K, V, T> getViewStoreClient(String storeName) {
-        return getViewStoreClient(storeName, null);
-    }
+    // public <K, V, T> ViewStoreClient<K, V, T> getViewStoreClient(String
+    // storeName) {
+    // return getViewStoreClient(storeName, null);
+    // }
 
     public <K, V> StoreClient<K, V> getStoreClient(String storeName,
                                                    InconsistencyResolver<Versioned<V>> resolver) {
@@ -130,11 +131,12 @@ public abstract class AbstractStoreClientFactory implements StoreClientFactory {
         return new DefaultStoreClient<K, V>(storeName, resolver, this, 3);
     }
 
-    public <K, V, T> ViewStoreClient<K, V, T> getViewStoreClient(String storeName,
-                                                                 InconsistencyResolver<Versioned<V>> resolver) {
-
-        return new DefaultViewStoreClient<K, V, T>(storeName, resolver, this, 3);
-    }
+    // public <K, V, T> ViewStoreClient<K, V, T> getViewStoreClient(String
+    // storeName,
+    // InconsistencyResolver<Versioned<V>> resolver) {
+    //
+    // return new DefaultViewStoreClient<K, V, T>(storeName, resolver, this, 3);
+    // }
 
     @SuppressWarnings("unchecked")
     public <K, V, T> Store<K, V, T> getRawStore(String storeName,

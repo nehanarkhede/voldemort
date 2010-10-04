@@ -16,6 +16,8 @@
 
 package voldemort;
 
+import inteng.serializer.voldemort.IntEngVoldemortSerializerFactory;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -30,7 +32,6 @@ import java.util.Set;
 
 import voldemort.client.ClientConfig;
 import voldemort.client.DefaultStoreClient;
-import voldemort.client.DefaultViewStoreClient;
 import voldemort.client.SocketStoreClientFactory;
 import voldemort.client.StoreClientFactory;
 import voldemort.client.protocol.RequestFormatType;
@@ -52,7 +53,7 @@ public class VoldemortClientShell {
     private static final String PROMPT = "> ";
 
     private static DefaultStoreClient<Object, Object> client;
-    private static DefaultViewStoreClient<Object, Object, Object> viewClient;
+    private static DefaultStoreClient<Object, Object> viewClient;
     private static boolean isView = false;
 
     public static void main(String[] args) throws Exception {
@@ -85,14 +86,15 @@ public class VoldemortClientShell {
         }
 
         ClientConfig clientConfig = new ClientConfig().setBootstrapUrls(bootstrapUrl)
-                                                      .setRequestFormatType(RequestFormatType.VOLDEMORT_V3);
+                                                      .setRequestFormatType(RequestFormatType.VOLDEMORT_V3)
+                                                      .setSerializerFactory(new IntEngVoldemortSerializerFactory());
         StoreClientFactory factory = new SocketStoreClientFactory(clientConfig);
 
         try {
             if(!isView)
                 client = (DefaultStoreClient<Object, Object>) factory.getStoreClient(storeName);
             else
-                viewClient = (DefaultViewStoreClient<Object, Object, Object>) factory.getViewStoreClient(storeName);
+                viewClient = (DefaultStoreClient<Object, Object>) factory.getStoreClient(storeName);
         } catch(Exception e) {
             Utils.croak("Could not connect to server: " + e.getMessage());
         }

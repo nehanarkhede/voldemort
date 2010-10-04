@@ -105,15 +105,6 @@ public class MockStoreClientFactory implements StoreClientFactory {
         return new DefaultStoreClient(storeName, resolver, this, 3);
     }
 
-    public <K, V, T> ViewStoreClient<K, V, T> getViewStoreClient(String storeName) {
-        return getViewStoreClient(storeName, new TimeBasedInconsistencyResolver<V>());
-    }
-
-    public <K, V, T> ViewStoreClient<K, V, T> getViewStoreClient(String storeName,
-                                                                 InconsistencyResolver<Versioned<V>> resolver) {
-        return new DefaultViewStoreClient(storeName, resolver, this, 3);
-    }
-
     public <K1, V1, T1> Store<K1, V1, T1> getRawStore(String storeName,
                                                       InconsistencyResolver<Versioned<V1>> resolver) {
         if(this.storesXml != null)
